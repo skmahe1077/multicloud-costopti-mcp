@@ -1,7 +1,7 @@
-// ─── Server Factory ─────────────────────────────────────────────────
+// Server Factory
 export { createServer, type CreateServerOptions, retry } from "./server.js";
 
-// ─── Core Types ─────────────────────────────────────────────────────
+// Core Types
 export type {
   CloudProvider,
   CostCategory,
@@ -22,7 +22,7 @@ export type {
   ToolResponse,
 } from "./types/cost.js";
 
-// ─── Normalizers ────────────────────────────────────────────────────
+// Normalizers
 export {
   normalizeAwsCostItem,
   normalizeAzureCostItem,
@@ -33,7 +33,7 @@ export {
   groupCostsByCloud,
 } from "./tools/shared/cost-normalizer.js";
 
-// ─── Savings Calculator ─────────────────────────────────────────────
+// Savings Calculator
 export {
   computePriorityScore,
   computeImpact,
@@ -42,7 +42,7 @@ export {
   type SavingsSummary,
 } from "./tools/shared/savings-calculator.js";
 
-// ─── Cost Trend Analyzer ────────────────────────────────────────────
+// Cost Trend Analyzer
 export {
   analyzeTrend,
   computePercentChange,
@@ -52,7 +52,7 @@ export {
   type CostAnomaly,
 } from "./tools/shared/cost-trend-analyzer.js";
 
-// ─── Tag Analyzer ───────────────────────────────────────────────────
+// Tag Analyzer
 export {
   analyzeTagCoverage,
   mergeTagCoverage,

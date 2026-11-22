@@ -1,4 +1,4 @@
-// ─── Core Types ─────────────────────────────────────────────────────
+// Core Types
 
 export type CloudProvider = "aws" | "azure" | "gcp";
 
@@ -32,7 +32,7 @@ export type OptimizationType =
 export type Effort = "LOW" | "MEDIUM" | "HIGH";
 export type Impact = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
-// ─── Normalized Cost Item ───────────────────────────────────────────
+// Normalized Cost Item
 
 export interface NormalizedCostItem {
   id: string;
@@ -53,7 +53,7 @@ export interface NormalizedCostItem {
   rawData: unknown;
 }
 
-// ─── Optimization Recommendation ────────────────────────────────────
+// Optimization Recommendation
 
 export interface OptimizationRecommendation {
   id: string;
@@ -81,7 +81,7 @@ export interface OptimizationRecommendation {
   rawData: unknown;
 }
 
-// ─── Unused / Idle Resource ─────────────────────────────────────────
+// Unused / Idle Resource
 
 export interface UnusedResource {
   id: string;
@@ -102,7 +102,7 @@ export interface UnusedResource {
   rawData: unknown;
 }
 
-// ─── Budget & Forecast ──────────────────────────────────────────────
+// Budget & Forecast
 
 export interface BudgetStatus {
   cloud: CloudProvider;
@@ -127,7 +127,7 @@ export interface BudgetAlert {
   triggered: boolean;
 }
 
-// ─── Cost Trend ─────────────────────────────────────────────────────
+// Cost Trend
 
 export interface CostTrend {
   cloud: CloudProvider;
@@ -145,7 +145,7 @@ export interface CostDataPoint {
   currency: string;
 }
 
-// ─── Tag Coverage ───────────────────────────────────────────────────
+// Tag Coverage
 
 export interface TagCoverage {
   cloud: CloudProvider;
@@ -164,7 +164,7 @@ export interface TagGap {
   missingTags: string[];
 }
 
-// ─── Cross-Cloud Summary ────────────────────────────────────────────
+// Cross-Cloud Summary
 
 export interface CostDashboardSummary {
   clouds: CloudProvider[];
@@ -188,7 +188,7 @@ export interface ServiceCost {
   percentOfTotal: number;
 }
 
-// ─── Tool Response Wrapper ──────────────────────────────────────────
+// Tool Response Wrapper
 
 export interface ToolResponse<T> {
   success: boolean;

@@ -5,7 +5,7 @@ import type {
   CostCategory,
 } from "../../types/cost.js";
 
-// ─── Trend Detection ────────────────────────────────────────────────
+// Trend Detection
 
 export function analyzeTrend(
   dataPoints: CostDataPoint[],
@@ -42,7 +42,7 @@ export function analyzeTrend(
   return "STABLE";
 }
 
-// ─── Percent Change ─────────────────────────────────────────────────
+// Percent Change
 
 export function computePercentChange(
   dataPoints: CostDataPoint[],
@@ -57,7 +57,7 @@ export function computePercentChange(
   return ((last - first) / first) * 100;
 }
 
-// ─── Average Daily Cost ─────────────────────────────────────────────
+// Average Daily Cost
 
 export function computeAverageDailyCost(dataPoints: CostDataPoint[]): number {
   if (dataPoints.length === 0) return 0;
@@ -65,7 +65,7 @@ export function computeAverageDailyCost(dataPoints: CostDataPoint[]): number {
   return total / dataPoints.length;
 }
 
-// ─── Build Cost Trend ───────────────────────────────────────────────
+// Build Cost Trend
 
 export function buildCostTrend(
   cloud: CloudProvider,
@@ -84,7 +84,7 @@ export function buildCostTrend(
   };
 }
 
-// ─── Detect Cost Anomalies ──────────────────────────────────────────
+// Detect Cost Anomalies
 
 export interface CostAnomaly {
   date: Date;

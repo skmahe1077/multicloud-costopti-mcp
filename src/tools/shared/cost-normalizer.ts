@@ -5,7 +5,7 @@ import {
   type CloudProvider,
 } from "../../types/cost.js";
 
-// ─── AWS Cost Explorer → NormalizedCostItem ─────────────────────────
+// AWS Cost Explorer → NormalizedCostItem
 
 export function normalizeAwsCostItem(
   result: Record<string, unknown>,
@@ -41,7 +41,7 @@ export function normalizeAwsCostItem(
   };
 }
 
-// ─── Azure Cost → NormalizedCostItem ────────────────────────────────
+// Azure Cost → NormalizedCostItem
 
 export function normalizeAzureCostItem(
   row: unknown[],
@@ -78,7 +78,7 @@ export function normalizeAzureCostItem(
   };
 }
 
-// ─── GCP Billing → NormalizedCostItem ───────────────────────────────
+// GCP Billing → NormalizedCostItem
 
 export function normalizeGcpCostItem(
   row: Record<string, unknown>,
@@ -119,7 +119,7 @@ export function normalizeGcpCostItem(
   };
 }
 
-// ─── Service → Category Mappers ─────────────────────────────────────
+// Service → Category Mappers
 
 export function mapAwsServiceToCategory(service: string): CostCategory {
   const s = service.toLowerCase();
@@ -199,7 +199,7 @@ export function mapGcpServiceToCategory(service: string): CostCategory {
   return "OTHER";
 }
 
-// ─── Category Label Helper ──────────────────────────────────────────
+// Category Label Helper
 
 export function getCategoryLabel(category: CostCategory): string {
   const labels: Record<CostCategory, string> = {

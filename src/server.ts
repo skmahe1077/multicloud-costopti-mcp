@@ -15,7 +15,7 @@ import type {
 import { aggregateSavings } from "./tools/shared/savings-calculator.js";
 import { mergeTagCoverage } from "./tools/shared/tag-analyzer.js";
 
-// ─── AWS Tool Imports ───────────────────────────────────────────────
+// AWS Tool Imports
 import * as awsCostExplorer from "./tools/aws/cost-explorer.js";
 import * as awsRightsizing from "./tools/aws/rightsizing.js";
 import * as awsSavingsPlans from "./tools/aws/savings-plans.js";
@@ -30,7 +30,7 @@ import * as awsTrustedAdvisor from "./tools/aws/trusted-advisor.js";
 import * as awsCostAnomalies from "./tools/aws/cost-anomalies.js";
 import * as awsDataTransfer from "./tools/aws/data-transfer.js";
 
-// ─── Azure Tool Imports ─────────────────────────────────────────────
+// Azure Tool Imports
 import * as azureCostAnalysis from "./tools/azure/cost-analysis.js";
 import * as azureAdvisor from "./tools/azure/advisor-recommendations.js";
 import * as azureVmRightsizing from "./tools/azure/vm-rightsizing.js";
@@ -44,7 +44,7 @@ import * as azureCosmosDb from "./tools/azure/cosmosdb-optimization.js";
 import * as azureHybridBenefit from "./tools/azure/hybrid-benefit.js";
 import * as azureBudget from "./tools/azure/budget-alerts.js";
 
-// ─── GCP Tool Imports ───────────────────────────────────────────────
+// GCP Tool Imports
 import * as gcpBilling from "./tools/gcp/billing-analysis.js";
 import * as gcpRecommender from "./tools/gcp/recommender.js";
 import * as gcpVmRightsizing from "./tools/gcp/vm-rightsizing.js";
@@ -58,10 +58,10 @@ import * as gcpNetwork from "./tools/gcp/network-optimization.js";
 import * as gcpLabels from "./tools/gcp/label-coverage.js";
 import * as gcpBudget from "./tools/gcp/budget-alerts.js";
 
-// ─── Resources Import ───────────────────────────────────────────────
+// Resources Import
 import * as finopsFrameworks from "./resources/finops-frameworks.js";
 
-// ─── Server Options ─────────────────────────────────────────────────
+// Server Options
 
 export interface CreateServerOptions {
   name?: string;
@@ -69,7 +69,7 @@ export interface CreateServerOptions {
   clouds?: CloudProvider[];
 }
 
-// ─── Connectivity Cache ─────────────────────────────────────────────
+// Connectivity Cache
 
 const connectivityCache = new Map<
   string,
@@ -77,7 +77,7 @@ const connectivityCache = new Map<
 >();
 const CACHE_TTL = parseInt(process.env.CACHE_TTL_SECONDS ?? "300") * 1000;
 
-// ─── Retry with Exponential Backoff ─────────────────────────────────
+// Retry with Exponential Backoff
 
 export async function retry<T>(
   fn: () => Promise<T>,
@@ -105,7 +105,7 @@ export async function retry<T>(
   throw new Error("Retry exhausted");
 }
 
-// ─── Create Server ──────────────────────────────────────────────────
+// Create Server
 
 export function createServer(options?: CreateServerOptions): McpServer {
   const serverName = options?.name ?? process.env.MCP_SERVER_NAME ?? "multicloud-costopti-mcp";
@@ -121,7 +121,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
 
   const limit = pLimit(3);
 
-  // ─── Validate Connectivity ──────────────────────────────────────
+  // Validate Connectivity
 
   server.tool(
     "validate_cloud_connectivity",
@@ -183,7 +183,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
     },
   );
 
-  // ─── Cross-Cloud: Cost Dashboard ──────────────────────────────────
+  // Cross-Cloud: Cost Dashboard
 
   server.tool(
     "multicloud_cost_dashboard",
@@ -276,7 +276,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
     },
   );
 
-  // ─── Cross-Cloud: Top Optimization Recommendations ────────────────
+  // Cross-Cloud: Top Optimization Recommendations
 
   server.tool(
     "multicloud_optimization_recommendations",
@@ -346,7 +346,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
     },
   );
 
-  // ─── Cross-Cloud: Unused Resources ────────────────────────────────
+  // Cross-Cloud: Unused Resources
 
   server.tool(
     "multicloud_unused_resources",
@@ -383,7 +383,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
     },
   );
 
-  // ─── Cross-Cloud: Budget Forecast ─────────────────────────────────
+  // Cross-Cloud: Budget Forecast
 
   server.tool(
     "multicloud_budget_forecast",
@@ -418,7 +418,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
     },
   );
 
-  // ─── Cross-Cloud: Cost Allocation / Tag Audit ─────────────────────
+  // Cross-Cloud: Cost Allocation / Tag Audit
 
   server.tool(
     "multicloud_cost_allocation_report",
@@ -457,7 +457,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
     },
   );
 
-  // ─── Register Cloud-Specific Tools ────────────────────────────────
+  // Register Cloud-Specific Tools
 
   if (enabledClouds.has("aws")) {
     awsCostExplorer.register(server);
@@ -508,7 +508,7 @@ export function createServer(options?: CreateServerOptions): McpServer {
     logger.info("Registered 12 GCP cost optimization tools");
   }
 
-  // ─── Register Resources ───────────────────────────────────────────
+  // Register Resources
   finopsFrameworks.register(server);
 
   return server;

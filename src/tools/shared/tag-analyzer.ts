@@ -4,7 +4,7 @@ import type {
   CloudProvider,
 } from "../../types/cost.js";
 
-// ─── Default Required Tags (FinOps best practices) ──────────────────
+// Default Required Tags (FinOps best practices)
 
 export const DEFAULT_REQUIRED_TAGS = [
   "Environment",
@@ -14,7 +14,7 @@ export const DEFAULT_REQUIRED_TAGS = [
   "Project",
 ];
 
-// ─── Analyze Tag Coverage ───────────────────────────────────────────
+// Analyze Tag Coverage
 
 export interface ResourceForTagAnalysis {
   resourceId: string;
@@ -63,7 +63,7 @@ export function analyzeTagCoverage(
   };
 }
 
-// ─── Merge Tag Coverage Across Clouds ───────────────────────────────
+// Merge Tag Coverage Across Clouds
 
 export interface MergedTagCoverage {
   totalResources: number;

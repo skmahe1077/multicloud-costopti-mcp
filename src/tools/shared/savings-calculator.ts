@@ -7,7 +7,7 @@ import {
   type CloudProvider,
 } from "../../types/cost.js";
 
-// ─── Priority Score Computation ─────────────────────────────────────
+// Priority Score Computation
 // Produces a 0–100 score factoring in savings amount, percentage,
 // effort, and optimization type.
 
@@ -63,7 +63,7 @@ export function computePriorityScore(rec: {
   return Math.min(100, Math.max(0, score));
 }
 
-// ─── Impact from savings ────────────────────────────────────────────
+// Impact from savings
 
 export function computeImpact(estimatedMonthlySavings: number): Impact {
   if (estimatedMonthlySavings >= 5000) return "CRITICAL";
@@ -72,7 +72,7 @@ export function computeImpact(estimatedMonthlySavings: number): Impact {
   return "LOW";
 }
 
-// ─── Aggregate Savings ──────────────────────────────────────────────
+// Aggregate Savings
 
 export interface SavingsSummary {
   totalMonthlySavings: number;

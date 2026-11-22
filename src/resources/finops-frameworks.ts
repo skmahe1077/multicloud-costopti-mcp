@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 export function register(server: McpServer): void {
-  // ─── Cost Summary Schema ────────────────────────────────────────
+  // Cost Summary Schema
   server.resource(
     "cost://summary/schema",
     "cost://summary/schema",
@@ -43,7 +43,7 @@ export function register(server: McpServer): void {
     }),
   );
 
-  // ─── FinOps Framework Reference ─────────────────────────────────
+  // FinOps Framework Reference
   server.resource(
     "cost://finops/framework",
     "cost://finops/framework",
@@ -116,7 +116,7 @@ export function register(server: McpServer): void {
     }),
   );
 
-  // ─── Optimization Playbook ──────────────────────────────────────
+  // Optimization Playbook
   server.resource(
     "cost://playbook/quick-wins",
     "cost://playbook/quick-wins",
