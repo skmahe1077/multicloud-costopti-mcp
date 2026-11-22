@@ -1,97 +1,34 @@
 # multicloud-costopti-mcp
 
-> Multi-cloud cost optimization MCP server for AWS, Azure, and GCP, providing unified FinOps visibility, rightsizing, waste detection, and savings recommendations for AI-powered IDEs and agents.
-
 [![npm version](https://img.shields.io/npm/v/multicloud-costopti-mcp.svg)](https://www.npmjs.com/package/multicloud-costopti-mcp)
 [![PyPI version](https://img.shields.io/pypi/v/multicloud-costopti-mcp.svg)](https://pypi.org/project/multicloud-costopti-mcp/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)](https://www.typescriptlang.org/)
-[![MCP](https://img.shields.io/badge/MCP-1.12-green)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://python.org)
+
+A production-ready **Model Context Protocol (MCP)** server providing unified cost optimization visibility across **AWS**, **Azure**, and **GCP**. Built for AI agents and Claude Desktop.
+
+**43 cost optimization tools** | **3 MCP resources** | **3 cloud providers** | **1 unified interface**
 
 ---
 
-## Overview
+## Features
 
-A production-grade **Model Context Protocol (MCP) server** that provides **43 cost optimization tools**, **3 MCP resources**, and **4 shared utility modules**: giving AI agents and Claude Desktop unified, read-only visibility into cloud spending across AWS, Azure, and GCP.
-
-Built on the [FinOps Framework](https://www.finops.org/framework/) principles of **Inform**, **Optimize**, and **Operate**, this server enables AI-driven cloud cost management with normalized data types, priority-scored recommendations, and cross-cloud aggregation.
-
-### Key Capabilities
-
-- **Cost Visibility**: Unified cost breakdowns by service, category, region, and account across all three clouds
-- **Rightsizing**: EC2, Azure VM, and GCE instance rightsizing based on CPU/memory utilization metrics
-- **Waste Detection**: Automated discovery of unused EBS volumes, unattached disks, idle load balancers, orphaned IPs, and stopped VMs
-- **Commitment Optimization**: Savings Plans, Reserved Instance, and Committed Use Discount (CUD) purchase recommendations
-- **Storage Optimization**: S3 lifecycle policies, gp2-to-gp3 migration, Azure storage tier analysis, GCS Autoclass enablement
-- **Container Optimization**: AKS and GKE autoscaler configuration, spot/preemptible node opportunities, Autopilot migration
-- **Database Optimization**: RDS/Cloud SQL/Azure SQL idle detection, rightsizing, and serverless migration candidates
-- **Budget Monitoring**: Cross-cloud budget status, forecasted overspend alerts, and anomaly detection
-- **Tag/Label Auditing**: Resource tagging coverage analysis for proper cost allocation
+- **43 cost optimization tools** spanning cost visibility, rightsizing, waste detection, commitment optimization, storage optimization, container optimization, database optimization, budget monitoring, and tag/label auditing
+- **6 cross-cloud tools** for unified cost dashboards, prioritized optimization action plans, aggregated unused resource detection, budget forecasting, and cost allocation auditing
+- **Normalized cost schema** that unifies cost data from all three clouds into a single `NormalizedCostItem`/`OptimizationRecommendation` format with priority scoring (0-100)
+- **Built on the FinOps Framework**: Inform, Optimize, and Operate principles with normalized data types and cross-cloud aggregation
+- **Resilient by design** with exponential backoff, jitter-based retry (100ms base, 5 retries), and 30-second SDK timeouts
+- **Read-only operations**: no infrastructure modifications, safe for production use
+- **Zod-validated inputs** on every tool call
+- **Structured logging** via Winston with account ID masking
+- **Programmatic API** for embedding the server in your own applications
 
 ---
 
 ## Architecture
 
 ![Multi-Cloud Cost Optimization MCP Server Architecture](https://raw.githubusercontent.com/skmahe1077/multicloud-costopti-mcp/main/docs/multicloud-costopti-mcp-architecture.svg)
-
-```
-src/
-├── index.ts                              # CLI entry point (stdio transport)
-├── server.ts                             # MCP server factory + 6 cross-cloud tools
-├── lib.ts                                # Public API exports for programmatic usage
-├── logger.ts                             # Winston logger with account ID masking
-├── types/
-│   └── cost.ts                          # Core types: NormalizedCostItem, OptimizationRecommendation,
-│                                        #   UnusedResource, BudgetStatus, CostTrend, TagCoverage, etc.
-├── resources/
-│   └── finops-frameworks.ts             # 3 MCP resources: schema, FinOps framework, playbook
-└── tools/
-    ├── aws/                             # 13 AWS cost optimization tools
-    │   ├── cost-explorer.ts             #   Cost breakdown by service/region/account
-    │   ├── rightsizing.ts               #   EC2 rightsizing recommendations
-    │   ├── savings-plans.ts             #   Savings Plans purchase recommendations
-    │   ├── reserved-instances.ts        #   RI purchase recommendations
-    │   ├── unused-resources.ts          #   Unattached EBS, unused EIPs, idle NAT GWs, idle ALBs
-    │   ├── s3-optimization.ts           #   S3 lifecycle & Intelligent-Tiering
-    │   ├── lambda-optimization.ts       #   Lambda memory rightsizing & unused functions
-    │   ├── rds-optimization.ts          #   RDS idle/over-provisioned instances
-    │   ├── ebs-optimization.ts          #   gp2→gp3 migration, io1/io2 rightsizing
-    │   ├── compute-optimizer.ts         #   AWS Compute Optimizer (EC2, Lambda, EBS, ASG)
-    │   ├── trusted-advisor.ts           #   Trusted Advisor cost checks
-    │   ├── cost-anomalies.ts            #   Cost Anomaly Detection
-    │   └── data-transfer.ts             #   Data transfer cost analysis
-    ├── azure/                           # 12 Azure cost optimization tools
-    │   ├── cost-analysis.ts             #   Cost Management API breakdown
-    │   ├── advisor-recommendations.ts   #   Azure Advisor cost recommendations
-    │   ├── vm-rightsizing.ts            #   VM CPU utilization analysis
-    │   ├── unused-resources.ts          #   Unattached disks, deallocated VMs
-    │   ├── storage-optimization.ts      #   Storage tier & redundancy optimization
-    │   ├── sql-optimization.ts          #   SQL DTU/vCore & serverless optimization
-    │   ├── aks-optimization.ts          #   AKS autoscaler & spot node analysis
-    │   ├── reserved-instances.ts        #   Azure RI recommendations
-    │   ├── app-service-optimization.ts  #   Empty/over-provisioned App Service Plans
-    │   ├── cosmosdb-optimization.ts     #   Cosmos DB RU & region optimization
-    │   ├── hybrid-benefit.ts            #   Azure Hybrid Benefit (AHUB) opportunities
-    │   └── budget-alerts.ts             #   Budget status & alerts
-    ├── gcp/                             # 12 GCP cost optimization tools
-    │   ├── billing-analysis.ts          #   BigQuery billing export analysis
-    │   ├── recommender.ts               #   GCP Recommender cost insights
-    │   ├── vm-rightsizing.ts            #   Compute Engine rightsizing
-    │   ├── committed-use.ts             #   CUD recommendations
-    │   ├── unused-resources.ts          #   Unattached disks, unused static IPs
-    │   ├── storage-optimization.ts      #   GCS lifecycle & Autoclass
-    │   ├── bigquery-optimization.ts     #   Expensive queries & partitioning
-    │   ├── gke-optimization.ts          #   GKE autoscaler & spot nodes
-    │   ├── cloudsql-optimization.ts     #   Cloud SQL HA & rightsizing
-    │   ├── network-optimization.ts      #   Egress & inter-region costs
-    │   ├── label-coverage.ts            #   Resource labeling audit
-    │   └── budget-alerts.ts             #   Billing budget alerts
-    └── shared/                          # 4 shared utility modules
-        ├── cost-normalizer.ts           #   Normalize cost data across clouds
-        ├── savings-calculator.ts        #   Priority scoring (0-100) & savings aggregation
-        ├── cost-trend-analyzer.ts       #   Trend detection & anomaly analysis
-        └── tag-analyzer.ts              #   Tag/label coverage analysis
-```
 
 ### Design Patterns
 
@@ -108,11 +45,46 @@ src/
 
 ---
 
+## Install
+
+### npm
+
+```bash
+# Run directly with npx (no install needed)
+npx multicloud-costopti-mcp
+
+# Or install globally
+npm install -g multicloud-costopti-mcp
+
+# Or add to a project
+npm install multicloud-costopti-mcp
+```
+
+### pip
+
+```bash
+# pip
+pip install multicloud-costopti-mcp
+
+# uv
+uv pip install multicloud-costopti-mcp
+
+# uvx (no install needed)
+uvx multicloud-costopti-mcp
+
+# pipx (isolated global install)
+pipx install multicloud-costopti-mcp
+```
+
+> **Note:** The Python package is a thin wrapper that delegates to the Node.js server at runtime. Node.js 18+ must be available on PATH.
+
+---
+
 ## Quick Start
 
 ### Prerequisites
 
-- **Node.js 18+** — [nodejs.org](https://nodejs.org)
+- **Node.js 18+**: [nodejs.org](https://nodejs.org)
 - **Python 3.10+** (only if installing via pip)
 - Cloud credentials configured for at least one provider (AWS, Azure, or GCP)
 
@@ -136,8 +108,6 @@ pip install multicloud-costopti-mcp
 multicloud-costopti-mcp
 ```
 
-> **Note:** The Python package is a thin wrapper that delegates to the Node.js server at runtime. Node.js 18+ must be available on PATH.
-
 ### Option 4: From source
 
 ```bash
@@ -156,7 +126,9 @@ npm test           # run tests
 npm run typecheck  # type checking only
 ```
 
-### MCP Client Configuration
+---
+
+## MCP Client Configuration
 
 <details>
 <summary><strong>Claude Desktop</strong></summary>
@@ -513,7 +485,7 @@ Or configure via: **Cline sidebar > MCP Servers > Configure** in VS Code.
 
 ---
 
-## Cloud Credentials
+## Cloud Authentication
 
 ### AWS
 
@@ -603,48 +575,25 @@ export GCP_BILLING_ACCOUNT_ID=XXXXXX-XXXXXX-XXXXXX
 
 ---
 
-## Environment Variables
-
-Copy `.env.example` to `.env` and configure:
-
-```bash
-cp .env.example .env
-```
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `AWS_PROFILE` | N/A | AWS named profile |
-| `AWS_DEFAULT_REGION` | `us-east-1` | Default AWS region |
-| `AZURE_SUBSCRIPTION_ID` | N/A | Azure subscription to analyze |
-| `GCP_PROJECT_ID` | N/A | GCP project to analyze |
-| `GCP_BILLING_ACCOUNT_ID` | N/A | GCP billing account for budget tools |
-| `LOG_LEVEL` | `info` | Logging level: `debug`, `info`, `warn`, `error` |
-| `LOG_MASK_ACCOUNT_IDS` | `true` | Mask 12-digit account IDs in logs |
-| `CACHE_TTL_SECONDS` | `300` | Connectivity cache TTL (seconds) |
-
----
-
-## Testing
-
-```bash
-# Run all 35 tests
-npm test
-
-# Watch mode
-npm run test:watch
-
-# Type checking only
-npm run typecheck
-```
-
-**Test suites:**
-- `tests/savings-calculator.test.ts`: Priority scoring, impact computation, savings aggregation (12 tests)
-- `tests/cost-trend-analyzer.test.ts`: Trend detection, anomaly detection, percent change (15 tests)
-- `tests/tag-analyzer.test.ts`: Tag coverage analysis, cross-cloud merging (8 tests)
-
----
-
 ## Programmatic Usage
+
+Embed the MCP server in your own application:
+
+```typescript
+import { createServer } from "multicloud-costopti-mcp";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+
+// Create with all clouds enabled (default)
+const server = createServer();
+
+// Or enable only specific clouds
+const awsOnly = createServer({ clouds: ["aws"] });
+
+// Connect to any MCP transport
+await server.connect(new StdioServerTransport());
+```
+
+### Using types and utilities directly
 
 ```typescript
 import {
@@ -682,44 +631,171 @@ const trend = analyzeTrend([
 
 ---
 
-## Example Prompts for Claude
+## Tools Reference
 
-Once configured in Claude Desktop, try these prompts:
+### AWS Tools (13)
 
-```
-"Show me my AWS cost breakdown for the last 30 days"
+| Tool | Category | Description |
+|------|----------|-------------|
+| `aws_get_cost_explorer_summary` | Cost visibility | Cost breakdown by service, region, account, or usage type via Cost Explorer |
+| `aws_get_rightsizing_recommendations` | Rightsizing | EC2 rightsizing and idle instance detection with projected savings |
+| `aws_get_savings_plans_recommendations` | Commitment optimization | Savings Plans purchase recommendations (Compute, EC2, SageMaker) |
+| `aws_get_reserved_instance_recommendations` | Commitment optimization | RI recommendations for EC2, RDS, ElastiCache, OpenSearch, Redshift |
+| `aws_get_unused_resources` | Waste detection | Unattached EBS volumes, unused Elastic IPs, idle NAT Gateways, idle ALBs |
+| `aws_get_s3_cost_optimization` | Storage optimization | S3 buckets missing lifecycle policies, Intelligent-Tiering opportunities |
+| `aws_get_lambda_cost_optimization` | Rightsizing | Lambda memory rightsizing, unused function detection |
+| `aws_get_rds_optimization` | Database optimization | Idle and over-provisioned RDS instances based on CPU and connection metrics |
+| `aws_get_ebs_optimization` | Storage optimization | gp2-to-gp3 migration, underutilized io1/io2 IOPS analysis |
+| `aws_get_compute_optimizer_recommendations` | Rightsizing | AWS Compute Optimizer for EC2, Lambda, EBS, and Auto Scaling |
+| `aws_get_trusted_advisor_cost_checks` | Cost visibility | Trusted Advisor cost optimization checks (requires Business/Enterprise Support) |
+| `aws_get_cost_anomalies` | Budget monitoring | Cost Anomaly Detection with root cause analysis |
+| `aws_get_data_transfer_costs` | Cost visibility | Data transfer analysis: inter-AZ, internet egress, inter-region |
 
-"Find all unused resources across my AWS and Azure accounts"
+### Azure Tools (12)
 
-"What are my top rightsizing opportunities for EC2 instances?"
+| Tool | Category | Description |
+|------|----------|-------------|
+| `azure_get_cost_analysis` | Cost visibility | Cost breakdown by service, resource group, or location via Cost Management API |
+| `azure_get_advisor_cost_recommendations` | Cost visibility | Azure Advisor cost recommendations (rightsizing, RIs, unused resources) |
+| `azure_get_vm_rightsizing` | Rightsizing | VM rightsizing based on CPU utilization metrics |
+| `azure_get_unused_resources` | Waste detection | Unattached managed disks, deallocated VMs, unassociated public IPs |
+| `azure_get_storage_optimization` | Storage optimization | Storage tier analysis, redundancy downgrades (GRS to LRS), V1-to-V2 upgrades |
+| `azure_get_sql_optimization` | Database optimization | SQL Database DTU/vCore optimization, serverless migration candidates |
+| `azure_get_aks_optimization` | Container optimization | AKS autoscaler configuration, spot node pool opportunities |
+| `azure_get_reserved_instance_recommendations` | Commitment optimization | Azure RI purchase recommendations via Consumption API |
+| `azure_get_app_service_optimization` | Rightsizing | Empty App Service Plans, Premium-to-Standard downgrades |
+| `azure_get_cosmosdb_optimization` | Database optimization | Cosmos DB RU autoscale, multi-region review, serverless candidates |
+| `azure_get_hybrid_benefit_opportunities` | Commitment optimization | Windows Server VMs not using Azure Hybrid Benefit (AHUB) |
+| `azure_get_budget_alerts` | Budget monitoring | Budget status, spend vs. budget, and forecast overspend alerts |
 
-"Check if any of my S3 buckets are missing lifecycle policies"
+### GCP Tools (12)
 
-"Analyze my GKE clusters for cost optimization opportunities"
+| Tool | Category | Description |
+|------|----------|-------------|
+| `gcp_get_billing_analysis` | Cost visibility | Billing data analysis via BigQuery billing export |
+| `gcp_get_recommender_insights` | Cost visibility | GCP Recommender cost insights (compute, disk, SQL, address) |
+| `gcp_get_vm_rightsizing` | Rightsizing | Compute Engine rightsizing, stopped VM disk costs, custom machine type opportunities |
+| `gcp_get_committed_use_recommendations` | Commitment optimization | Committed Use Discount (CUD) recommendations for Compute and Cloud SQL |
+| `gcp_get_unused_resources` | Waste detection | Unattached persistent disks, unused static external IPs |
+| `gcp_get_storage_optimization` | Storage optimization | GCS lifecycle policy gaps, Autoclass enablement, storage class analysis |
+| `gcp_get_bigquery_optimization` | Database optimization | Expensive query detection, unpartitioned table identification |
+| `gcp_get_gke_optimization` | Container optimization | GKE autoscaler configuration, spot VM pools, Autopilot migration |
+| `gcp_get_cloudsql_optimization` | Database optimization | Cloud SQL HA review, instance rightsizing |
+| `gcp_get_network_cost_optimization` | Cost visibility | Network egress and inter-region transfer costs via billing export |
+| `gcp_get_label_coverage` | Tag/label auditing | Resource labeling audit against required labels for cost allocation |
+| `gcp_get_billing_budget_alerts` | Budget monitoring | Billing budget status and threshold alerts |
 
-"Should I purchase Savings Plans or Reserved Instances for my EC2 workloads?"
+### Cross-Cloud Tools (5)
 
-"How many of my Azure VMs are missing Azure Hybrid Benefit?"
+| Tool | Description |
+|------|-------------|
+| `multicloud_cost_dashboard` | Unified cost dashboard aggregating spend by cloud and category |
+| `multicloud_optimization_recommendations` | Prioritized optimization action plan across all clouds |
+| `multicloud_unused_resources` | Aggregated unused/idle resource detection across clouds |
+| `multicloud_budget_forecast` | Cross-cloud budget vs. actual with forecast alerts |
+| `multicloud_cost_allocation_report` | Tag/label coverage audit for cost allocation |
 
-"Find BigQuery tables that should be partitioned to reduce scan costs"
+### Utility
 
-"Give me a full FinOps health check across all my cloud accounts"
+| Tool | Description |
+|------|-------------|
+| `validate_cloud_connectivity` | Health check for all configured cloud provider connections (cached 5 min) |
+
+---
+
+## MCP Resources
+
+| URI | Description |
+|-----|-------------|
+| `cost://summary/schema` | Schema reference for `NormalizedCostItem` and `OptimizationRecommendation` types |
+| `cost://finops/framework` | FinOps Framework reference with Inform/Optimize/Operate domain mapping to tools |
+| `cost://playbook/quick-wins` | Prioritized quick-win playbook: eliminate waste, rightsize, optimize storage, buy commitments |
+
+---
+
+## Example Prompts
+
+| Prompt | Tools Used |
+|--------|-----------|
+| *"Show me my AWS cost breakdown for the last 30 days"* | `aws_get_cost_explorer_summary` |
+| *"Find all unused resources across my AWS and Azure accounts"* | `multicloud_unused_resources` |
+| *"What are my top rightsizing opportunities for EC2 instances?"* | `aws_get_rightsizing_recommendations` |
+| *"Check if any of my S3 buckets are missing lifecycle policies"* | `aws_get_s3_cost_optimization` |
+| *"Analyze my GKE clusters for cost optimization opportunities"* | `gcp_get_gke_optimization` |
+| *"Should I purchase Savings Plans or Reserved Instances for my EC2 workloads?"* | `aws_get_savings_plans_recommendations`, `aws_get_reserved_instance_recommendations` |
+| *"How many of my Azure VMs are missing Azure Hybrid Benefit?"* | `azure_get_hybrid_benefit_opportunities` |
+| *"Find BigQuery tables that should be partitioned to reduce scan costs"* | `gcp_get_bigquery_optimization` |
+| *"Give me a full FinOps health check across all my cloud accounts"* | `multicloud_cost_dashboard`, `multicloud_optimization_recommendations` |
+
+---
+
+## Security
+
+| Feature | Detail |
+|---------|--------|
+| Read-only | All tools perform read-only operations, no infrastructure changes |
+| Input validation | Every tool input validated with Zod schemas before SDK calls |
+| Credential safety | Credentials are never logged or included in tool responses |
+| Account ID masking | Account IDs masked in logs when `LOG_MASK_ACCOUNT_IDS=true` |
+| Request tracing | Every invocation generates a UUID `requestId` for end-to-end tracing |
+| SDK timeouts | All cloud SDK calls timeout after 30 seconds |
+| Retry with backoff | Exponential backoff with jitter (100ms base, max 5 retries) for throttling |
+
+---
+
+## Configuration
+
+All configuration is via environment variables.
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `LOG_LEVEL` | Logging verbosity (`debug`, `info`, `warn`, `error`) | `info` |
+| `LOG_MASK_ACCOUNT_IDS` | Mask cloud account IDs in logs | `true` |
+| `CACHE_TTL_SECONDS` | Cache TTL for connectivity checks | `300` |
+| `MCP_SERVER_NAME` | Server name reported to MCP clients | `multicloud-costopti-mcp` |
+| `MCP_SERVER_VERSION` | Server version reported to MCP clients | `1.0.0` |
+
+---
+
+## Testing
+
+```bash
+npm test              # run all tests (35 tests across 3 suites)
+npm run test:watch    # watch mode
+npm run typecheck     # type checking only
 ```
 
 ---
 
-## Scripts
+## Publishing
 
-| Script | Description |
-|--------|-------------|
-| `npm run build` | Compile TypeScript to `dist/` |
-| `npm start` | Run compiled server (`node dist/index.js`) |
-| `npm run dev` | Development mode with hot reload (`tsx watch`) |
-| `npm test` | Run test suite (`vitest run`) |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run typecheck` | Type check without emitting (`tsc --noEmit`) |
-| `npm run lint` | Lint source files |
-| `npm run clean` | Remove `dist/` directory |
+### npm
+
+```bash
+npm login
+npm pack --dry-run    # preview what will be published
+npm publish           # runs clean → build → test automatically
+```
+
+### PyPI
+
+```bash
+cd python
+pip install --upgrade build twine
+python -m build
+twine upload dist/*
+```
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Make your changes and add tests
+4. Run `npm test && npm run typecheck` to verify
+5. Commit and push your branch
+6. Open a pull request
 
 ---
 
@@ -731,4 +807,4 @@ Once configured in Claude Desktop, try these prompts:
 
 ## License
 
-MIT
+[MIT](LICENSE)
