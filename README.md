@@ -2,6 +2,8 @@
 
 > Multi-cloud cost optimization MCP server for AWS, Azure, and GCP — unified FinOps visibility, rightsizing, waste detection, and savings recommendations for AI-powered IDEs and agents.
 
+[![npm version](https://img.shields.io/npm/v/multicloud-costopti-mcp.svg)](https://www.npmjs.com/package/multicloud-costopti-mcp)
+[![PyPI version](https://img.shields.io/pypi/v/multicloud-costopti-mcp.svg)](https://pypi.org/project/multicloud-costopti-mcp/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)](https://www.typescriptlang.org/)
 [![MCP](https://img.shields.io/badge/MCP-1.12-green)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -487,6 +489,8 @@ Or configure via: **Cline sidebar > MCP Servers > Configure** in VS Code.
 ---
 
 ## Architecture
+
+![Multi-Cloud Cost Optimization MCP Server Architecture](https://raw.githubusercontent.com/skmahe1077/multicloud-costopti-mcp/main/docs/multicloud-costopti-mcp-architecture.svg)
 
 ```
 src/
