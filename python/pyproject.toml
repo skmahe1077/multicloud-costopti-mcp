@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "multicloud-costopti-mcp"
+version = "1.0.0"
+description = "Multi-cloud cost optimization MCP server for AWS, Azure, and GCP — unified FinOps visibility, rightsizing, waste detection, and savings recommendations for AI-powered IDEs and agents"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Mahendran Selvakumar" },
+]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "cost-optimization",
+    "finops",
+    "multicloud",
+    "aws",
+    "azure",
+    "gcp",
+    "cloud-cost",
+    "rightsizing",
+    "savings",
+    "claude",
+    "ai-agent",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: System :: Systems Administration",
+]
+
+[project.urls]
+Homepage = "https://github.com/skmahe1077/multicloud-costopti-mcp"
+Repository = "https://github.com/skmahe1077/multicloud-costopti-mcp"
+Issues = "https://github.com/skmahe1077/multicloud-costopti-mcp/issues"
+
+[project.scripts]
+multicloud-costopti-mcp = "multicloud_costopti_mcp:serve"
+
+[tool.hatch.build.targets.wheel]
+packages = ["multicloud_costopti_mcp"]
